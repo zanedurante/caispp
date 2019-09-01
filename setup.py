@@ -11,7 +11,7 @@ setuptools.setup(
     description="High level ML library used in CAIS++ Curriculum",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/caispp",
+    url="https://github.com/zanedurante/caispp",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
