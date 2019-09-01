@@ -1,1 +1,2 @@
-from . import ImageClassifier # allows for caispp.ImageDataset instead of caispp.caispp.ImageDataset
+# allows for caispp.ImageDataset instead of caispp.ImageClassifier.ImageDataset
+from ImageClassifier import ImageClassifier, ImageDataset 
