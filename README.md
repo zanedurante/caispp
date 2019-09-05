@@ -1,4 +1,4 @@
-# CAISPP
+# Caispp
 
 ## About
 This is package allows for high level ML model creation.  It uses Keras with a Tensorflow backend, and was originally created to be used for the curriculum of USC's CAIS++ (Center for AI in Society, Student Branch).  
@@ -27,4 +27,4 @@ classifier.test(show_distribution=True)
 
 # Build the package
 
-To build the package run the build.sh script in the directory.
+To build the package run the build.sh script in the directory.  The output is stored in `dist/`.
