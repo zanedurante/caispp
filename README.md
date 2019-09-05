@@ -6,6 +6,9 @@ This is package allows for high level ML model creation.  It uses Keras with a T
 ## Use Cases
 The package currently supports Image Classification.
 
+## Installation
+To install run `pip install caispp`.  This package uses Tensorflow 2.0. 
+
 ## Example usage
 
 You can see a jupyter notebook with ouputs in the `examples/` directory.  The notebook runs the code below:
@@ -24,6 +27,6 @@ classifier.show_history()
 classifier.test(show_distribution=True)
 ```
 
-# Build the package
+## Build the package
 
-To build the package run the build.sh script in the directory.  The output is stored in `dist/`.
+To build the package run the `build.sh` script in the directory.  The output is stored in `dist/`.
