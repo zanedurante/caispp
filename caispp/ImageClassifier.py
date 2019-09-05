@@ -1,12 +1,14 @@
+from sklearn.metrics import accuracy_score, f1_score
 from pathlib import Path, PosixPath
 from PIL import Image
-import errno 
-import os
-import numpy as np
 from glob import glob
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from sklearn.metrics import accuracy_score, f1_score
+import numpy as np
+import errno
+import os
+
+
 
 class ImageClassifier():
     
@@ -269,9 +271,9 @@ class ImageDataset():
         # Ensure that train, test, and valid have the same keys for data
         if not set(self.train_data.keys()) == set(self.test_data.keys()):
             raise Warning("Classes in training data are not classes in test data")
-    
-        if not set(self.train_data.keys()) == set(self.valid_data.keys()):
-            raise Warning("Warning: Classes in training data are not classes in validation data")
+        if self.valid_data:
+            if not set(self.train_data.keys()) == set(self.valid_data.keys()):
+                raise Warning("Warning: Classes in training data are not classes in validation data")
         
         self.num_outputs = len(list(self.train_data.keys()))
         

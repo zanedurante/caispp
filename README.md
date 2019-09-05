@@ -8,6 +8,8 @@ The package currently supports Image Classification.
 
 ## Example usage
 
+You can see a jupyter notebook with ouputs in the `examples/` directory.  The notebook runs the code below:
+
 ```
 from caispp import ImageDataset, ImageClassifier
 from pathlib import Path
@@ -22,3 +24,7 @@ classifier.show_history()
 
 classifier.test(show_distribution=True)
 ```
+
+# Build the package
+
+To build the package run the build.sh script in the directory.
