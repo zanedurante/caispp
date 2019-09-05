@@ -11,8 +11,7 @@ The package currently supports Image Classification.
 You can see a jupyter notebook with ouputs in the `examples/` directory.  The notebook runs the code below:
 
 ```
-from caispp import ImageDataset, ImageClassifier
-from pathlib import Path
+from caispp import ImageDataset, ImageClassifier, Path
 
 path = Path('example_dataset/') # Path to dataset
 dataset = ImageDataset(path, show_distribution=True)
