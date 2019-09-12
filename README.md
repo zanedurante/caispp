@@ -1,7 +1,7 @@
 # Caispp
 
 ## About
-This is package allows for high level ML model creation.  It uses Keras with a Tensorflow backend, and was originally created to be used for the curriculum of USC's CAIS++ (Center for AI in Society, Student Branch).  
+This package allows for high level ML model creation.  It uses Keras with a Tensorflow backend, and was originally created to be used for the curriculum of USC's CAIS++ (Center for AI in Society, Student Branch).  
 
 ## Use Cases
 The package currently supports Image Classification.
