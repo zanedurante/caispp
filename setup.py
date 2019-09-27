@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="caispp",
-    version="0.1.2",
+    version="0.1.3",
     author="Zane Durante",
     author_email="zanedurante@gmail.com",
     description="High level ML library used in CAIS++ Curriculum",
@@ -24,5 +24,6 @@ setuptools.setup(
           'Pillow', 
           'matplotlib',
           'sklearn',
+          'pandas',
       ],
 )
