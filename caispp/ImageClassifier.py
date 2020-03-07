@@ -5,15 +5,16 @@ from glob import glob
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
+import pickle
 import errno
 import os
 
 
 
 class ImageClassifier():
-    
+
     # Argument takes an image dataset 
-    def __init__(self, dataset, num_features=64, show_model=False):
+    def __init__(self, dataset=None, num_features=64, show_model=False):
         """ Creates model from dataset.
             dataset : ImageDataset class.  Dataset that the model will use.
             num_features : Number of features to use for classification.  This is
@@ -24,9 +25,21 @@ class ImageClassifier():
         self.dataset = dataset
         
         # Create model
-        self.model = self.__createModel(num_features, show_model)
+        if dataset:
+            self.model = self.__createModel(num_features, show_model)
+        else:
+            self.model = None
+
         self.history = None
-        
+    
+    # Sets self.dataset in case the empty constructor was used
+    def set_dataset(self, dataset, num_features=64, show_model=False):
+        """ Sets the dataset for the model.
+            dataset : ImageDataset class.  Dataset that the model will use.
+        """
+        self.dataset = dataset
+        self.model = self.__createModel(num_features, show_model)
+
     # use keras .fit() method on self.model
     def train(self, lr=0.0001, epochs=10, batch_size=8, 
               show_output=True):
@@ -37,6 +50,11 @@ class ImageClassifier():
             batch_size : number of examples used in each training batch.
             show_ouptput : Determines whether to show training output (progress bars + values).
         """
+        
+        if not self.dataset:
+            raise Exception('Use model.set_dataset(dataset) before calling train.')
+
+
         if show_output:
             show_output = 1
         else:
@@ -90,6 +108,10 @@ class ImageClassifier():
                                 distribution of the test set.  Also shows the distribution of 
                                 incorrect classifications.
         """
+
+        if not self.dataset:
+            raise Exception('Use model.set_dataset(dataset) before calling test.')
+
         x_data = []
         y_data = []
         for key in self.dataset.test_data.keys():
@@ -202,9 +224,79 @@ class ImageClassifier():
             plt.xlabel('epoch')
         
         plt.show()
+    
+    def save(self, path='model/'):
+        """ Saves the model in the specified location (as a directory).  By default it will save it in the current directory as 'model/'.
+            
+            path : The relative path (str) to save the model to. It defaults to 'model/'.  To save it in a different directory, 
+                    do model.save(path='models/model1/').
+        """
+
+        if path[-1] != '/':
+            path = path + '/'
+
+        try:
+            os.makedirs(path)
+        except FileExistsError:
+            print("Overwriting existing model saved in", path)
+
+        self.model.save(path + 'model.h5', save_format='h5')
+        
+        with open(path+'dataset.pickle', 'wb') as f:
+            pickle.dump(self.dataset, f)
+
+    def load(self, path='model/'):
+        """ Loads the model from the specified directory.  By default it will load from the current directory as 'model/'.
+            
+            path : The relative path (str) to load the model from. It defaults to 'model/'.  To load from a different directory, 
+                    do model.load(path='models/model_dir/').
+        """
+        if path[-1] != '/':
+            path = path + '/'
+
+        self.model = tf.keras.models.load_model(path + 'model.h5')
+        with open(path+'dataset.pickle', 'rb') as f:
+            self.dataset = pickle.load(f)
+
+    def predict_from_paths(self, paths):
+        """ Uses the model to predict the classes of the images located in paths.
+            
+            paths : An array-like of paths (strs or Paths) to image files.
+
+            returns : A list of tuples where each tuple contains the class and the confidence. 
+                For example:
+                    preds = model.predict_from_paths(['images/image1.png', '/images/image2.png'])
+                    print(preds) # Outputs [('car', 0.89), ('panda', 0.69)]
+        """
+        imgs = []
+        img_size = self.dataset.img_size
+        for path in paths:
+            img = Image.open(path)
+
+            img = img.resize((img_size, img_size), Image.ANTIALIAS)
+            # Convert to numpy array
+            img = np.asarray(img)
+            img = tf.keras.applications.inception_v3.preprocess_input(img)
+            
+            imgs.append(img)
+
+        nparr = np.ndarray((len(imgs), img_size, img_size, 3))
+        for i in range(len(imgs)):
+            nparr[i] = imgs[i]
+
+        # predict on numpy array
+        preds = self.model.predict(nparr)
+
+        conf_levels = preds.max(axis=-1)
+        class_preds = np.argmax(preds, axis=-1)
+        class_preds = [self.dataset.idx2class[pred] for pred in class_preds]
+
+        final_preds = [(class_pred, conf_level) for class_pred, conf_level in zip (class_preds, conf_levels)]
+        
+        return final_preds
 
     def __createModel(self, num_features, show_model):
-        """ Creates model that will be used for transfer learning.
+        """ Creates tf.Keras model that will be used for transfer learning.  It is pretrained on ImageNet.
         
             num_features : number of features extracted from the final layer of the inceptionv3 model.
             show_model : if True outputs the model.summary() of the classification model.

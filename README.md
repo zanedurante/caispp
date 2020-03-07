@@ -26,6 +26,24 @@ classifier.show_history()
 
 classifier.test(show_distribution=True)
 ```
+## Dataset directory structure
+```
+├── example_dataset         
+│   ├── test
+│   │   ├── class1      # Directory with images of class1
+│   │   ├── class2      # Directory with images of class2
+│   │   └── ...       
+│   ├── train
+│   │   ├── class1      # Directory with images of class1
+│   │   ├── class2      # Directory with images of class2
+│   │   └── ...         
+│   ├── valid           # Optional validation set    
+│   │   ├── class1
+│   │   ├── class2
+│   │   └── ... 
+└──  
+```
+Each of the `test/`, `train/`, and `valid/` directories contain subdirectories for each class.  In those subdirectories, put the images files of that class.  
 
 ## Build the package
 
