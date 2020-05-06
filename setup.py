@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="caispp",
-    version="0.2.4",
+    version="0.3.0",
     author="Zane Durante",
     author_email="zanedurante@gmail.com",
     description="High level ML library used in CAIS++ Curriculum",
@@ -20,7 +20,7 @@ setuptools.setup(
     ],
     install_requires=[
           'numpy==1.16.4',
-          'tensorflow==2.0.0-b1', # TODO: Update to Tensorflow >= 2.0.0 once no longer beta
+          'tensorflow>=2.0', 
           'Pillow', 
           'matplotlib',
           'sklearn',
