@@ -1,5 +1,5 @@
 from sklearn.metrics import accuracy_score, f1_score
-from pathlib import Path, PosixPath
+from pathlib import Path, PurePosixPath
 from PIL import Image
 from glob import glob
 import matplotlib.pyplot as plt
@@ -390,12 +390,12 @@ class ImageDataset():
     
         # Ensure that path has required files
         for req in reqs:
-            if self.path / PosixPath(req) not in files:
+            if self.path / PurePosixPath(req) not in files:
                 raise FileNotFoundError(
                     errno.ENOENT, os.strerror(errno.ENOENT), req)
     
         # Create flag dictionary (flags[filename] is True when it exists)
-        opt_flags = [True if self.path / PosixPath(opt) in files else False for opt in opts]
+        opt_flags = [True if self.path / PurePosixPath(opt) in files else False for opt in opts]
         flags = {opts[idx]:opt_flags[idx] for idx in range(len(opts))}
     
         return flags
