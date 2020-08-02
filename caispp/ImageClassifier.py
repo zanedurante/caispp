@@ -430,9 +430,11 @@ class ImageDataset():
             for img_ext in img_exts:
                 for file in glob(str(dir_path) + '/' + label + '/*' + img_ext):
                     img = Image.open(file)
+                    img = img.convert('RGB')
                     img = img.resize((self.img_size, self.img_size), Image.ANTIALIAS)
                     # Convert to numpy array
                     img = np.asarray(img)
+
                     img = tf.keras.applications.inception_v3.preprocess_input(img)
                     
                     arr.append(img)
