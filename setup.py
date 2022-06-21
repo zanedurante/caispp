@@ -19,7 +19,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-          'numpy==1.16.4',
+          'numpy==1.22.0',
           'tensorflow>=2.0', 
           'Pillow', 
           'matplotlib',
